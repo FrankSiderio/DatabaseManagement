@@ -219,3 +219,4 @@ SELECT *
 FROM customers
 WHERE cid = 'C005';
 
+--Frank Siderio 2/9 Lab 3
