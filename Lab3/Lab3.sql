@@ -205,7 +205,7 @@ WHERE city != 'New York' AND city != 'Tokyo';
 
 SELECT *
 FROM products
-WHERE city != 'Dallas' OR city != 'Daluth' AND priceusd >= 1;
+WHERE (city != 'Dallas' OR city != 'Duluth') AND priceusd >= 1;
 
 SELECT *
 FROM orders
