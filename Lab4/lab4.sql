@@ -65,18 +65,12 @@ ORDER BY pid desc;
 
    -----------------
 --7 all the customers who have the same discount as any customer in Dallas or London
-SELECT *
-FROM customers
-WHERE cid not in (SELECT cid
-                  FROM customers
-                  WHERE city = 'Dallas' or city = 'London'
-                 )
-                 AND discount in 
-                 (SELECT discount
-                  FROM customers
-                  WHERE city = 'Dallas' or city = 'London'
-                 );
-   ----------
+select *
+from customers
+where discount in (select discount
+                   from customers
+                   where city in ('Dallas', 'London')
+                  );
 
 --8 Constraints: What are they? What are they good for? Advantage?
 -- Contraints are limitations or rules used for data in a table. They are good so that the 
