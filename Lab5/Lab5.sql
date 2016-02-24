@@ -50,51 +50,12 @@ where customers.city = agents.city;
 
 --#7 list the name and city of the customers who live in the city that makes the fewest
 --   different kinds of products
-select customers.name, customers.city, count(products) 
-from customers, products
-where customers.city = products.city
-group by products;
-
-select * 
-from customers
-where cid in (select cid
-	      from orders
-	      where pid in (Select count(city)
-                            from products
-                            group by city
-                            limit 1
-                           )
-             );
---use limit, limit the number of rows by 1
-
-select city
-from customers
-where city in (Select city
-              from products
-              where count(city) in (select count(city)
-                             from products
-                             group by city
-                             limit 1
-                            )
-              
-             );
-        --
-select city 
-from customers, (select city, count(city)
-                 from products
-                 group by city
-                 limit 1
-                )
-where customers.city = products.city;
-
-select customers.city, customers.name
-from customers, products
-where customers.city = products.city
-  and count(products.city) in(select count(city)
-       from products
-       group by city
-       limit 1
-      )
-
-----I could not figure out number 7 but these are the different things I tried
-
+SELECT name, city 
+FROM customers
+WHERE city in (SELECT city
+               FROM products 
+               GROUP BY city
+               order by COUNT(pid)
+               limit 1
+              );
+ -----------
