@@ -54,8 +54,47 @@ select customers.name, customers.city, count(products)
 from customers, products
 where customers.city = products.city
 group by products;
-         
-Select count(products)
-from products
-group by products;
+
+select * 
+from customers
+where cid in (select cid
+	      from orders
+	      where pid in (Select count(city)
+                            from products
+                            group by city
+                            limit 1
+                           )
+             );
+--use limit, limit the number of rows by 1
+
+select city
+from customers
+where city in (Select city
+              from products
+              where count(city) in (select count(city)
+                             from products
+                             group by city
+                             limit 1
+                            )
+              
+             );
+        --
+select city 
+from customers, (select city, count(city)
+                 from products
+                 group by city
+                 limit 1
+                )
+where customers.city = products.city;
+
+select customers.city, customers.name
+from customers, products
+where customers.city = products.city
+  and count(products.city) in(select count(city)
+       from products
+       group by city
+       limit 1
+      )
+
+----I could not figure out number 7 but these are the different things I tried
 
