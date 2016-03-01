@@ -46,12 +46,10 @@ where orders.cid = customers.cid
 --  from data in other tables and compares those values to the values in orders.totalUSD
 --  Display's the rows in orders where it is incorrect
 
-select *
-from orders, products
-where orders.pid = products.pid
-
-select sum(orders.qty * products.priceusd)
-from orders, products
-group by products.
-
+Select *
+from orders, customers, products
+where orders.cid = customers.cid
+  and orders.pid = products.pid
+  and orders.totalusd != (products.priceusd * orders.qty * ((100 - customers.discount) / 100));
   
+
