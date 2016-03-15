@@ -24,7 +24,7 @@ order by name desc;
 select customers.name, orders.pid, orders.totalusd
 from customers, orders
 where orders.cid = customers.cid
-order by orders.totalusd desc 
+order by orders.totalusd desc;
 
 --4 Shows all the customer names (in alphabetical order) and their total ordered
 
