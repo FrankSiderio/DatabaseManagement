@@ -93,15 +93,16 @@ declare
 
 begin 
   open resultSet for
-    select prereqnum
-    from Prerequisites
-    where courseNum = course_num;
+    select courses.name, prerequisites.preReqNum
+    from courses, prerequisites
+    where courses.num = prerequisites.courseNum
+      and prerequisites.courseNum = course_num;
   return resultSet;
 end;
 $$
 language plpgsql; 
 
-select PreReqsFor(308, 'results');
+select PreReqsFor(499, 'results');
 fetch all from results; 
 
 --Returns the courses for which the passed in course number is an immediate prereq
@@ -113,14 +114,18 @@ declare
 
 begin 
   open resultSet for
-    Select courseNum
-    from Prerequisites
-    where preReqNum = pre_req;
+    select name, num
+    from courses, prerequisites
+    where courses.num = prerequisites.courseNum
+      and prerequisites.preReqNum = pre_req;
   return resultSet;
 end;
 $$
 language plpgsql;
 
 
-select IsPreReqFor(308, 'results');
+select IsPreReqFor(220, 'results');
 fetch all from results;
+
+
+
