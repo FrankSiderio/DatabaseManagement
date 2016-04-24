@@ -78,6 +78,7 @@ create table RegStage (
 create table specialEffects (
     eID  char(4) unique not null,
     sid  char(4)  not null references Stages(sid),
+    name text,
     description  text,
     damage       integer,
     check (damage > 0),
@@ -103,7 +104,7 @@ Create table Match (
     check (time > 0),
     check(stockLives > 0),
     check(numOfPlayers >= 2),
-  primary key(matchID)
+  primary key(matchID, sid)
 );
 
 --Player_Match Table--
@@ -232,6 +233,79 @@ values('c002', 'm002');
 insert into Character_Match(cid, matchID)
 values('c003', 'm003');
 
+--Inserts into OmegaStage Table--
+insert into OmegaStage(sid, defaultSize)
+values('s000', 10);
+
+insert into OmegaStage(sid, defaultSize)
+values('s002', 12);
+
+--Inserts into RegStage Table--
+insert into RegStage(sid, size)
+values('s001', 8);
+
+insert into RegStage(sid, size)
+values('s002', 15);
+
+--Inserts into specialEffects Table--
+insert into specialEffects(eID, sid, name, description, damage)
+values('e000', 's001', 'wind', 'wind', 1);
+
+insert into specialEffects(eID, sid, name, description, damage)
+values('e001', 's003', 'bombs', 'blow stuff up', 10);
+
+--Inserts into Tier Table--
+insert into Tier(name, level, cid)
+values('Tier 1', 'B', 'c000');
+
+insert into Tier(name, level, cid)
+values('Tier 2', 'A', 'c001');
+
+insert into Tier(name, level, cid)
+values('Tier 3', 'A', 'c002');
+
+insert into Tier(name, level, cid)
+values('Tier 1', 'A', 'c003');
+
+--Inserts into Moves Table--
+insert into Moves(moveID, cid, name, damage)
+values('m000', 'c000', 'down B', 10);
+
+insert into Moves(moveID, cid, name, damage)
+values('m001', 'c001', 'B Special', 15);
+
+insert into Moves(moveID, cid, name, damage)
+values('m002', 'c002', 'neutral B', 7);
+
+insert into Moves(moveID, cid, name, damage)
+values('m003', 'c003', 'Side smash', 12);
+
+--Inserts into Items Table--
+insert into Items(itemID, name, description, damageGiven, matchID)
+values('i000', 'bat', 'one hit KO', 250, 'm000');
+
+insert into Items(itemID, name, description, damageGiven, matchID)
+values('i001', 'bomb', 'blows stuff up', 10, 'm001');
+
+insert into Items(itemID, name, description, damageGiven, matchID)
+values('i002', 'gun', 'shoots stuff', 5, 'm002');
+
+insert into Items(itemID, name, description, damageGiven, matchID)
+values('i003', 'mine', 'explodes when activated', 20, 'm003');
+
+
+
+--Views--
+
+--View into the Players table--
+create view playerInfo as
+select Players.firstName, Players.userName, Players.favCharacter, Players.favStage
+from Players
+
+select *
+from playerInfo
+
+
 --Players who have played on the stage Final Destination-- 
 select Players.firstName
 from Players, Player_Match, Stages, Match
@@ -241,5 +315,4 @@ where Players.pid = Player_Match.pid
   and Stages.name = 'Final Destination'
 
 select *
-from stages
-where name = 'Final Destination'
+from Players
