@@ -323,7 +323,8 @@ from PlayerCharacter
 --view without items--
 drop view if Exists matchView
 create view matchView as
-select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName, s.origin, s.song, c.name, p.firstName
+select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, 
+       s.sid, s.sName, s.origin, s.song, c.name, p.firstName
 from match m, stages s, Characters c, Character_Match cm, Players p, Player_Match pm
 where m.sid = s.sid
   and c.cid = cm.cid
@@ -399,6 +400,25 @@ where se.sid = s.sid
 order by se.damage desc
 limit 1
 
+--Player who uses the character with the strongest move--
+select p.pid, p.firstName, c.cid, c.cName, mo.mName, mo.damage
+from Characters c, Players p, Player_Character pc, Moves mo
+where p.pid = pc.pid
+  and pc.cid = c.cid
+  and c.cid = mo.cid
+order by mo.damage desc
+limit 1;
+ 
+--Returns the Players and characters who have played on a stage with special effects--
+select p.firstName, c.cName, s.sName, se.seName, se.damage
+from Players p, Characters c, Stages s, specialEffects se, Match m, 
+     Player_Match pm, Character_Match cm
+where se.sid = s.sid
+  and s.sid = m.sid
+  and m.matchID = cm.matchID
+  and c.cid = cm.cid
+  and p.pid = pm.pid
+  and pm.matchID = m.matchID
 
 --Players who have played on the stage Final Destination-- 
 
@@ -501,5 +521,25 @@ language plpgsql;
 --test--
 select characterMoves('Pikachu', 'results');
 fetch all from results;
-    
 
+create or replace function add_RegStage() returns trigger as
+$BODY$
+    begin
+        insert into RegStage values (NEW.sid, NEW.size);
+    return NEW;
+    End;
+$BODY$
+language plpgsql; 
+
+
+
+--Triggers--
+create trigger add_RegStage
+after insert or update on Stages
+for each row
+execute procedure add_RegStage();
+
+insert into Stages(sid, sName, sDescription, sOrigin, song)
+values ('s004', 'Wii Fit', 'nice stage', 'some place', 'wii fit song');
+
+--
