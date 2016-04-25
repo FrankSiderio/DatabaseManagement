@@ -34,19 +34,19 @@ create table Players (
 --Characters Table--
 create table Characters (
     cid          char(4) unique not null,
-    name         text not null,
-    description  text,
+    cName         text not null,
+    cDescription  text,
     class        text not null,
-    origin       text not null,
+    cOrigin       text not null,
   primary key(cid)
 );
 
 --Tier Table--
 create table Tier (
-    name   text not null,
+    tName   text not null,
     level  text not null,
     cid    char(4)  not null references Characters(cid),
-  primary key(name, level)
+  primary key(tName, level)
 );
 
 --Player_Character Table--
@@ -59,9 +59,9 @@ create table Player_Character (
 --Stages Table--
 create table Stages (
     sid          char(4) unique not null,
-    name         text not null,
-    description  text,
-    origin       text,
+    sName         text not null,
+    sDescription  text,
+    sOrigin       text,
     song         text not null,
   primary key(sid)
 );
@@ -78,8 +78,8 @@ create table RegStage (
 create table specialEffects (
     eID  char(4) unique not null,
     sid  char(4)  not null references Stages(sid),
-    name text,
-    description  text,
+    seName text,
+    seDescription  text,
     damage       integer,
     check (damage > 0),
   primary key(eID, sid)
@@ -125,7 +125,7 @@ create table Character_Match (
 create table Moves (
     moveID  char(4) unique not null,
     cid     char(4) not null references Characters(cid),
-    name    text not null,
+    mName    text not null,
     damage  integer,
     check(damage > 0),
   Primary key(moveID, cid)
@@ -134,8 +134,8 @@ create table Moves (
 --Items--
 create table Items (
     itemID       char(4) unique not null,
-    name         text not null,
-    description  text,
+    iName         text not null,
+    iDescription  text,
     damageGiven  integer not null,
     matchID      char(4) not null references Match(matchID),
     check (damageGiven > 0),
@@ -156,16 +156,16 @@ insert into Players (pid, userName, password, firstName, lastName, dob, favChara
 values('p003', 'jamesGriff', 'IamAnicePerson', 'James', 'Griffin', '06/9/1995', 'Marth', 'Dream Land');
 
 --Inserts into Characters Table--
-insert into Characters(cid, name, description, class, origin)
+insert into Characters(cid, cName, cDescription, class, cOrigin)
 values('c000', 'Pikachu', 'Down B', 'lightweight', 'pokemon');
 
-insert into Characters(cid, name, description, class, origin)
+insert into Characters(cid, cName, cDescription, class, cOrigin)
 values('c001', 'Marth', 'Uses a sword', 'middleweight', 'fire emblem');
 
-insert into Characters(cid, name, description, class, origin)
+insert into Characters(cid, cName, cDescription, class, cOrigin)
 values('c002', 'Bowser', 'Is a big dude', 'heavyweight', 'Mario');
 
-insert into Characters(cid, name, description, class, origin)
+insert into Characters(cid, cName, cDescription, class, cOrigin)
 values('c003', 'Link', 'Has a lot of items', 'middleweight', 'Zelda');
 
 --Inserts into Player_Character Table--
@@ -181,17 +181,20 @@ values ('p000', 'c002');
 insert into Player_Character(pid, cid)
 values ('p002', 'c003');
 
+insert into Player_Character(pid, cid)
+values('p003', 'c001');
+
 --Inserts into stages table--
-insert into Stages(sid, name, description, origin, song)
+insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s000', 'Final Destination', 'Good stage', 'some place', 'a song');
 
-insert into Stages(sid, name, description, origin, song)
+insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s001', 'Dream Land', 'nice stage', 'a place', 'dream song');
 
-insert into Stages(sid, name, description, origin, song)
+insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s002', 'Battlefield', 'a good stage', 'a nice place', 'a good song');
 
-insert into Stages(sid, name, description, origin, song)
+insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s003', 'Donkey Kong Land', 'big stage', 'a place', 'kong song');
 
 --Inserts into match table--
@@ -248,49 +251,49 @@ insert into RegStage(sid, size)
 values('s002', 15);
 
 --Inserts into specialEffects Table--
-insert into specialEffects(eID, sid, name, description, damage)
+insert into specialEffects(eID, sid, seName, seDescription, damage)
 values('e000', 's001', 'wind', 'wind', 1);
 
-insert into specialEffects(eID, sid, name, description, damage)
+insert into specialEffects(eID, sid, seName, seDescription, damage)
 values('e001', 's003', 'bombs', 'blow stuff up', 10);
 
 --Inserts into Tier Table--
-insert into Tier(name, level, cid)
+insert into Tier(tName, level, cid)
 values('Tier 1', 'B', 'c000');
 
-insert into Tier(name, level, cid)
+insert into Tier(tName, level, cid)
 values('Tier 2', 'A', 'c001');
 
-insert into Tier(name, level, cid)
+insert into Tier(tName, level, cid)
 values('Tier 3', 'A', 'c002');
 
-insert into Tier(name, level, cid)
+insert into Tier(tName, level, cid)
 values('Tier 1', 'A', 'c003');
 
 --Inserts into Moves Table--
-insert into Moves(moveID, cid, name, damage)
+insert into Moves(moveID, cid, mName, damage)
 values('m000', 'c000', 'down B', 10);
 
-insert into Moves(moveID, cid, name, damage)
+insert into Moves(moveID, cid, mName, damage)
 values('m001', 'c001', 'B Special', 15);
 
-insert into Moves(moveID, cid, name, damage)
+insert into Moves(moveID, cid, mName, damage)
 values('m002', 'c002', 'neutral B', 7);
 
-insert into Moves(moveID, cid, name, damage)
+insert into Moves(moveID, cid, mName, damage)
 values('m003', 'c003', 'Side smash', 12);
 
 --Inserts into Items Table--
-insert into Items(itemID, name, description, damageGiven, matchID)
+insert into Items(itemID, iName, iDescription, damageGiven, matchID)
 values('i000', 'bat', 'one hit KO', 250, 'm000');
 
-insert into Items(itemID, name, description, damageGiven, matchID)
+insert into Items(itemID, iName, iDescription, damageGiven, matchID)
 values('i001', 'bomb', 'blows stuff up', 10, 'm001');
 
-insert into Items(itemID, name, description, damageGiven, matchID)
+insert into Items(itemID, iName, iDescription, damageGiven, matchID)
 values('i002', 'gun', 'shoots stuff', 5, 'm002');
 
-insert into Items(itemID, name, description, damageGiven, matchID)
+insert into Items(itemID, iName, iDescription, damageGiven, matchID)
 values('i003', 'mine', 'explodes when activated', 20, 'm003');
 
 
@@ -299,20 +302,204 @@ values('i003', 'mine', 'explodes when activated', 20, 'm003');
 
 --View into the Players table--
 create view playerInfo as
-select Players.firstName, Players.userName, Players.favCharacter, Players.favStage
-from Players
+select p.firstName, p.userName, p.favCharacter, p.favStage
+from Players p
 
 select *
 from playerInfo
 
+--View into Players, Characters--
+drop view if exists PlayerCharacter 
+create view PlayerCharacter as
+select Characters.*, userName, firstName, favCharacter
+from Players, Characters, Player_Character
+where Players.pid = Player_Character.pid
+  and Characters.cid = Player_Character.cid
+
+select * 
+from PlayerCharacter
+
+--View into the match--
+--view without items--
+drop view if Exists matchView
+create view matchView as
+select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName, s.origin, s.song, c.name, p.firstName
+from match m, stages s, Characters c, Character_Match cm, Players p, Player_Match pm
+where m.sid = s.sid
+  and c.cid = cm.cid
+  and cm.matchID = m.matchID
+  and p.pid = pm.pid
+  and pm.matchID = m.matchID
+
+--View into the item and match table--
+drop view if exists itemMatchView
+create view itemMatchView as
+select i.iName, i.description, i.damageGiven, m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName
+from match m, Items i, Stages s
+where i.matchID = m.matchID
+  and m.sid = s.sid
+
+--View into players, characters, match, items, stages--
+--view with items--
+drop view if exists matchViewItems
+create view matchViewItems as
+select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName, s.origin, s.song, c.name, p.firstName, i.itemID, i.iName, i.damageGiven
+from match m, stages s, Characters c, Character_Match cm, Players p, Player_Match pm, Items i
+where m.sid = s.sid
+  and c.cid = cm.cid
+  and cm.matchID = m.matchID
+  and p.pid = pm.pid
+  and pm.matchID = m.matchID
+  and i.matchID = m.matchID
+
+--for fun--
+--View into the entire db--
+drop view if exists dbView
+create view dbView as
+select p.pid, p.firstName, p.lastName, p.dob, p.favCharacter, p.favStage,
+       m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers,
+       s.*, c.*,
+       i.itemID, i.iName, i.iDescription, i.damageGiven,
+       t.tName, t.level,
+       mo.moveID, mo.mName, mo.damage
+from Players p, Match m, Player_Match pm, Stages s, Characters c, Player_Character pc, Character_Match cm,
+     Items i, Tier t, Moves mo
+where p.pid = pm.pid
+  and pm.matchID = m.matchID
+  and m.sid = s.sid
+  and c.cid = cm.cid
+  and p.pid = pc.pid
+  and c.cid = pc.cid
+  and c.cid = cm.cid
+  and i.matchID = m.matchID
+  and t.cid = c.cid
+  and mo.cid = c.cid
+
+select * 
+from dbView
+	
+
+--Query Reports--
+
+--Avg Match Time--
+select avg(Time)
+from Match m
+
+--Character with the strongest move--
+select c.cid, c.cName, mo.mName, mo.damage as highestDamage
+from Characters c, Moves mo
+where c.cid = mo.cid
+order by mo.damage desc
+limit 1
+
+--Strongest Special Effect--
+select se.seName, se.seDescription, se.damage, s.sid, s.sName
+from specialEffects se, Stages s
+where se.sid = s.sid
+order by se.damage desc
+limit 1
+
 
 --Players who have played on the stage Final Destination-- 
-select Players.firstName
-from Players, Player_Match, Stages, Match
-where Players.pid = Player_Match.pid
-  and Player_Match.matchID = Match.matchID
-  and Match.sid = Stages.sid
-  and Stages.name = 'Final Destination'
 
-select *
-from Players
+  
+
+--Store Procedures--
+
+--Returns the players who have played on the passed in stage--
+create or replace function playerStage(text, REFCURSOR) returns REFCURSOR as
+$$
+declare
+  stage     text      := $1;
+  resultSet REFCURSOR := $2;
+
+begin
+  open resultSet for
+    select p.pid, p.firstName, p.lastName
+    from Players p, Player_Match pm, Stages s, Match m
+    where p.pid = pm.pid
+      and pm.matchID = m.matchID
+      and m.sid = s.sid
+      and s.sName = stage;
+  return resultSet;
+end;
+$$
+language plpgsql;
+
+--test--
+select playerStage('Final Destination', 'results');
+fetch all from results;
+
+--Returns Characters that have played on the passed in stage--
+create or replace function characterStage(text, REFCURSOR) returns REFCURSOR as
+$$
+declare
+  stage text          := $1;
+  resultSet REFCURSOR := $2;
+
+begin 
+  open resultSet for
+  select c.cid, c.cName, c.class
+  from Characters c, Character_Match cm, Match m, Stages s
+  where c.cid = cm.cid
+    and cm.matchID = m.matchID
+    and m.sid = s.sid
+    and s.sName = stage;
+  return resultSet;
+end;
+$$
+language plpgsql;
+
+--test--
+select characterStage('Final Destination', 'results');
+fetch all from results;
+
+--Returns what players AND characters have played on the passed in stage--
+create or replace function playerCharacterStage(text, REFCURSOR) returns REFCURSOR as
+$$
+declare
+  stage text          := $1;
+  resultSet REFCURSOR := $2;
+
+begin
+  open resultSet for
+  select p.pid, p.userName, c.cid, c.cName
+  from Players p, Characters c, Player_Match pm, Character_Match cm, Match m, Stages s
+  where p.pid = pm.pid
+    and pm.matchID = m.matchID
+    and c.cid = cm.cid
+    and cm.matchID = m.matchID
+    and m.sid = s.sid
+    and s.sName = stage;
+  return resultSet;
+end;
+$$
+language plpgsql;
+
+--test--
+select playerCharacterStage('Final Destination', 'results');
+fetch all from results;
+
+--returns all the moves for the passed in character--
+create or replace function characterMoves(text, REFCURSOR) returns REFCURSOR as 
+$$
+declare
+  character text      := $1; 
+  resultSet REFCURSOR := $2;
+
+begin
+  open resultSet for
+  select c.cName, mo.moveID, mo.mName, mo.damage, c.cid
+  from Moves mo, Characters c
+  where c.cid = mo.cid
+    and c.cName = character;
+  return resultSet;
+end;
+$$
+language plpgsql;
+
+--test--
+select characterMoves('Pikachu', 'results');
+fetch all from results;
+    
+
