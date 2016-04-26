@@ -139,7 +139,7 @@ create table Items (
     damageGiven  integer not null,
     matchID      char(4) not null references Match(matchID),
     check (damageGiven > 0),
-  Primary key(itemID)
+  Primary key(itemID, matchID)
 );
 
 --Inserts into Players Table--
@@ -150,10 +150,15 @@ insert into Players (pid, userName, password, firstName, lastName, dob, favChara
 values('p001', 'baseballDude', 'tgife@34567', 'John', 'Doe', '07/9/1996', 'Bowser', 'Final Destination');
 
 insert into Players (pid, userName, password, firstName, lastName, dob, favCharacter, favStage)
-values('p002', 'coolDude5', 'IamCool', 'Josh', 'Smith', '12/11/1995', 'Link', 'Battlefied');
+values('p002', 'coolDude5', 'IamCool', 'Josh', 'Smith', '12/11/1995', 'Link', 'Battlefield');
 
 insert into Players (pid, userName, password, firstName, lastName, dob, favCharacter, favStage)
 values('p003', 'jamesGriff', 'IamAnicePerson', 'James', 'Griffin', '06/9/1995', 'Marth', 'Dream Land');
+
+insert into Players (pid, userName, password, firstName, lastName, dob, favCharacter, favStage)
+values('p004', 'Alan007', 'alpaca', 'Alan', 'Labouseur', '01/3/1986', 'Kirby', 'Battlefield');
+
+select * from Players
 
 --Inserts into Characters Table--
 insert into Characters(cid, cName, cDescription, class, cOrigin)
@@ -167,6 +172,11 @@ values('c002', 'Bowser', 'Is a big dude', 'heavyweight', 'Mario');
 
 insert into Characters(cid, cName, cDescription, class, cOrigin)
 values('c003', 'Link', 'Has a lot of items', 'middleweight', 'Zelda');
+
+insert into Characters(cid, cName, cDescription, class, cOrigin)
+values('c004', 'Ness', 'swings a bat', 'lightweight', 'Earth Bound');
+
+select * from Characters
 
 --Inserts into Player_Character Table--
 insert into Player_Character(pid, cid)
@@ -184,6 +194,11 @@ values ('p002', 'c003');
 insert into Player_Character(pid, cid)
 values('p003', 'c001');
 
+insert into Player_Character(pid, cid)
+values('p004', 'c004');
+
+select * from Player_Character
+
 --Inserts into stages table--
 insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s000', 'Final Destination', 'Good stage', 'some place', 'a song');
@@ -196,6 +211,11 @@ values ('s002', 'Battlefield', 'a good stage', 'a nice place', 'a good song');
 
 insert into Stages(sid, sName, sDescription, sOrigin, song)
 values ('s003', 'Donkey Kong Land', 'big stage', 'a place', 'kong song');
+
+insert into Stages(sid, sName, sDescription, sOrigin, song)
+values ('s004', 'Temple', 'large stage', 'zelda', 'zelda song');
+
+select * from Stages
 
 --Inserts into match table--
 insert into Match(matchID, date, time, type, stockLives, numOfPlayers, sid)
@@ -210,6 +230,11 @@ values('m002', '01/2/2016', '300', 'Stock', 2, 2, 's002');
 insert into Match(matchID, date, time, type, stockLives, numOfPlayers, sid)
 values('m003', '01/2/2016', '400', 'Stock', 2, 2, 's003');
 
+insert into Match(matchID, date, time, type, stockLives, numOfPlayers, sid)
+values('m004', '01/9/2016', '340', 'Stock', 6, 8, 's004');
+
+select * from match
+
 --Inserts into Player_Match Table--
 insert into Player_Match(pid, matchID)
 values('p000', 'm000');
@@ -222,6 +247,11 @@ values('p002', 'm002');
 
 insert into Player_Match(pid, matchID)
 values('p003', 'm003');
+
+insert into Player_Match(pid, matchID)
+values('p004', 'm004');
+
+select * from Player_Match
 
 --Inserts into Character_Match--
 insert into Character_Match(cid, matchID)
@@ -236,12 +266,26 @@ values('c002', 'm002');
 insert into Character_Match(cid, matchID)
 values('c003', 'm003');
 
+insert into Character_Match(cid, matchID)
+values('c004', 'm004');
+
+select * from Character_Match
+
+
 --Inserts into OmegaStage Table--
 insert into OmegaStage(sid, defaultSize)
 values('s000', 10);
 
 insert into OmegaStage(sid, defaultSize)
 values('s002', 12);
+
+insert into OmegaStage(sid, defaultSize)
+values('s003', 8);
+
+insert into OmegaStage(sid, defaultSize)
+values('s004', 8);
+
+select * from OmegaStage
 
 --Inserts into RegStage Table--
 insert into RegStage(sid, size)
@@ -250,12 +294,16 @@ values('s001', 8);
 insert into RegStage(sid, size)
 values('s002', 15);
 
+select * from RegStage
+
 --Inserts into specialEffects Table--
 insert into specialEffects(eID, sid, seName, seDescription, damage)
 values('e000', 's001', 'wind', 'wind', 1);
 
 insert into specialEffects(eID, sid, seName, seDescription, damage)
 values('e001', 's003', 'bombs', 'blow stuff up', 10);
+
+select * from specialEffects
 
 --Inserts into Tier Table--
 insert into Tier(tName, level, cid)
@@ -270,6 +318,10 @@ values('Tier 3', 'A', 'c002');
 insert into Tier(tName, level, cid)
 values('Tier 1', 'A', 'c003');
 
+insert into Tier(tName, level, cid)
+values('Tier 1', 'B+', 'c004');
+
+select * from Tier
 --Inserts into Moves Table--
 insert into Moves(moveID, cid, mName, damage)
 values('m000', 'c000', 'down B', 10);
@@ -282,6 +334,11 @@ values('m002', 'c002', 'neutral B', 7);
 
 insert into Moves(moveID, cid, mName, damage)
 values('m003', 'c003', 'Side smash', 12);
+
+insert into Moves(moveID, cid, mName, damage)
+values('m004', 'c004', 'Side smash', 20);
+
+select * from Moves
 
 --Inserts into Items Table--
 insert into Items(itemID, iName, iDescription, damageGiven, matchID)
@@ -296,7 +353,10 @@ values('i002', 'gun', 'shoots stuff', 5, 'm002');
 insert into Items(itemID, iName, iDescription, damageGiven, matchID)
 values('i003', 'mine', 'explodes when activated', 20, 'm003');
 
+insert into Items(itemID, iName, iDescription, damageGiven, matchID)
+values('i004', 'Mr. Saturn', 'hurts', 25, 'm004');
 
+select * from Items
 
 --Views--
 
@@ -324,13 +384,15 @@ from PlayerCharacter
 drop view if Exists matchView
 create view matchView as
 select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, 
-       s.sid, s.sName, s.origin, s.song, c.name, p.firstName
-from match m, stages s, Characters c, Character_Match cm, Players p, Player_Match pm
+       s.sid, s.sName, s.sOrigin, s.song, c.cName, p.firstName
+from match m, Stages s, Characters c, Character_Match cm, Players p, Player_Match pm
 where m.sid = s.sid
   and c.cid = cm.cid
   and cm.matchID = m.matchID
   and p.pid = pm.pid
   and pm.matchID = m.matchID
+
+select * from matchView
 
 --View into the item and match table--
 drop view if exists itemMatchView
@@ -344,7 +406,7 @@ where i.matchID = m.matchID
 --view with items--
 drop view if exists matchViewItems
 create view matchViewItems as
-select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName, s.origin, s.song, c.name, p.firstName, i.itemID, i.iName, i.damageGiven
+select m.matchID, m.date, m.time, m.type, m.stockLives, m.numOfPlayers, s.sid, s.sName, s.sOrigin, s.song, c.cName, p.firstName, i.itemID, i.iName, i.damageGiven
 from match m, stages s, Characters c, Character_Match cm, Players p, Player_Match pm, Items i
 where m.sid = s.sid
   and c.cid = cm.cid
@@ -352,6 +414,8 @@ where m.sid = s.sid
   and p.pid = pm.pid
   and pm.matchID = m.matchID
   and i.matchID = m.matchID
+
+select * from matchViewItems
 
 --for fun--
 --View into the entire db--
@@ -525,21 +589,48 @@ fetch all from results;
 create or replace function add_RegStage() returns trigger as
 $BODY$
     begin
+      if NEW.sid is null then
         insert into RegStage values (NEW.sid, NEW.size);
     return NEW;
     End;
 $BODY$
 language plpgsql; 
 
-
+create or replace function addPlayer() returns trigger as
+$$
+     begin 
+        if NEW.pid is null then 
+          raise exception 'Invalid pid';
+        end if;
+        if NEW.userName is null then
+          raise exception 'Invalid userName';
+        end if;
+        if NEW.password is null then
+          raise exception 'Invalid password'; 
+        end if;
+        insert into Players(pid, userName, password, firstName, lastName, dob, favCharacter, favStage)
+                    values (NEW.pid, NEW.userName, NEW.password, NEW.firstName, NEW.lastName, NEW.dob, NEW.favCharacter, NEW.favStage);
+        return new;
+      end;
+$$ language plpgsql;
+     
 
 --Triggers--
-create trigger add_RegStage
-after insert or update on Stages
-for each row
-execute procedure add_RegStage();
+create trigger addPlayer
+after insert on Players
+for each row execute procedure addPlayer();
 
-insert into Stages(sid, sName, sDescription, sOrigin, song)
-values ('s004', 'Wii Fit', 'nice stage', 'some place', 'wii fit song');
 
---
+
+--Security--
+--There are really only two roles (admin and a player)--
+create role db_admin
+grant select, insert, update, delete
+on all tables in schema public 
+to db_admin
+
+create role player
+grant select
+on Players, Stages, OmegaStage, RegStage, specialEffects, Match, Characters, Moves, Tier, Items
+to player
+
