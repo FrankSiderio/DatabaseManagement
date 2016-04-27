@@ -46,7 +46,7 @@ create table Tier (
     tName   text not null,
     level  text not null,
     cid    char(4)  not null references Characters(cid),
-  primary key(tName, level)
+  primary key(tName, cid)
 );
 
 --Player_Character Table--
@@ -561,7 +561,7 @@ $$
 language plpgsql;
 
 --test--
-select playerCharacterStage('Final Destination', 'results');
+select playerCharacterStage('Dream Land', 'results');
 fetch all from results;
 
 --returns all the moves for the passed in character--
